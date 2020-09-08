@@ -1,0 +1,265 @@
+
+read("mc_dat_final1.RData")
+
+###BLF_ND
+test.names<-c("tukey", "snk", "dmrt", "lsd","lsd.bonf","lsd.sidak", "t.test_bonf", "t.test_sidak", #"REGW",
+              "scheffe")
+prop_type1<-matrix(ncol=2, nrow=9)
+prop_type1[,2]<-test.names
+for(i in 1:9){
+  prop_type1[i,1]<-round(length(unique(which(mylist$blf_nd$sig_diffs[,,i]<0.05, arr.ind=TRUE)[,1]))/(length(mylist$blf_nd$sig_diffs[,1,i])),3)
+}
+
+mylist$blf_nd$newprop_type1<-prop_type1
+
+###BHF_ND
+prop_type1<-matrix(ncol=2, nrow=9)
+prop_type1[,2]<-test.names
+for(i in 1:9){
+  prop_type1[i,1]<-round(length(unique(which(mylist$bhf_nd$sig_diffs[,,i]<0.05, arr.ind=TRUE)[,1]))/(length(mylist$bhf_nd$sig_diffs[,1,i])),3)
+}
+
+mylist$bhf_nd$newprop_type1<-prop_type1
+
+
+###BLM_ND
+prop_type1<-matrix(ncol=2, nrow=9)
+prop_type1[,2]<-test.names
+for(i in 1:9){
+  prop_type1[i,1]<-round(length(unique(which(mylist$blm_nd$sig_diffs[,,i]<0.05, arr.ind=TRUE)[,1]))/(length(mylist$blm_nd$sig_diffs[,1,i])),3)
+}
+
+mylist$blm_nd$newprop_type1<-prop_type1
+
+###BHM_ND
+prop_type1<-matrix(ncol=2, nrow=9)
+prop_type1[,2]<-test.names
+for(i in 1:9){
+  prop_type1[i,1]<-round(length(unique(which(mylist$bhm_nd$sig_diffs[,,i]<0.05, arr.ind=TRUE)[,1]))/(length(mylist$bhm_nd$sig_diffs[,1,i])),3)
+}
+
+mylist$bhm_nd$newprop_type1<-prop_type1
+
+bal_type1<-as.data.frame(rbind(mylist$blf_nd$newprop_type1, mylist$blm_nd$newprop_type1, mylist$bhf_nd$newprop_type1,
+                               mylist$bhm_nd$newprop_type1))
+colnames(bal_type1)<-c("prop", "test")
+bal_type1$type<-rep(c("lowss_few", "lowss_many", "highss_few", "highss_many"), each=9)
+
+########################
+#####UNBALANCED
+###BLF_ND
+test.names<-c("tukey", "snk", "dmrt", "lsd","lsd.bonf","lsd.sidak", "t.test_bonf", "t.test_sidak", #"REGW",
+              "scheffe")
+prop_type1<-matrix(ncol=2, nrow=9)
+prop_type1[,2]<-test.names
+for(i in 1:9){
+  prop_type1[i,1]<-round(length(unique(which(mylist$ublf_nd$sig_diffs[,,i]<0.05, arr.ind=TRUE)[,1]))/(length(mylist$ublf_nd$sig_diffs[,1,i])),3)
+}
+
+mylist$ublf_nd$newprop_type1<-prop_type1
+
+###BHF_ND
+prop_type1<-matrix(ncol=2, nrow=9)
+prop_type1[,2]<-test.names
+for(i in 1:9){
+  prop_type1[i,1]<-round(length(unique(which(mylist$ubhf_nd$sig_diffs[,,i]<0.05, arr.ind=TRUE)[,1]))/(length(mylist$ubhf_nd$sig_diffs[,1,i])),3)
+}
+
+mylist$ubhf_nd$newprop_type1<-prop_type1
+
+
+###BLM_ND
+prop_type1<-matrix(ncol=2, nrow=9)
+prop_type1[,2]<-test.names
+for(i in 1:9){
+  prop_type1[i,1]<-round(length(unique(which(mylist$ublm_nd$sig_diffs[,,i]<0.05, arr.ind=TRUE)[,1]))/(length(mylist$ublm_nd$sig_diffs[,1,i])),3)
+}
+
+mylist$ublm_nd$newprop_type1<-prop_type1
+
+###BHM_ND
+prop_type1<-matrix(ncol=2, nrow=9)
+prop_type1[,2]<-test.names
+for(i in 1:9){
+  prop_type1[i,1]<-round(length(unique(which(mylist$ubhm_nd$sig_diffs[,,i]<0.05, arr.ind=TRUE)[,1]))/(length(mylist$ubhm_nd$sig_diffs[,1,i])),3)
+}
+
+mylist$ubhm_nd$newprop_type1<-prop_type1
+
+unbal_type1<-as.data.frame(rbind(mylist$ublf_nd$newprop_type1, mylist$ublm_nd$newprop_type1, mylist$ubhf_nd$newprop_type1,
+                                 mylist$ubhm_nd$newprop_type1))
+colnames(unbal_type1)<-c("prop", "test")
+unbal_type1$type<-rep(c("lowss_few", "lowss_many", "highss_few", "highss_many"), each=9)
+
+
+
+bal_type1$type<-revalue(bal_type1$type, c("lowss_few"="LSFG", "lowss_many"="LSMG", "highss_few"="HSFG", "highss_many"="HSMG"))
+
+bal_type1$test<-revalue(bal_type1$test, c("dmrt"="DMRT", "lsd"="LSD", "lsd.bonf"="LSD Bonf", "lsd.sidak"="LSD Sid?k","scheffe"="Scheffe", "snk"="SNK", "t.test_bonf"="t-test Bonf", "t.test_sidak"="t-test Sidak", "tukey"="Tukey"))
+
+unbal_type1$type<-revalue(unbal_type1$type, c("lowss_few"="LSFG", "lowss_many"="LSMG", "highss_few"="HSFG", "highss_many"="HSMG"))
+
+unbal_type1$test<-revalue(unbal_type1$test, c("dmrt"="DMRT", "lsd"="LSD", "lsd.bonf"="LSD Bonf", "lsd.sidak"="LSD Sid?k","scheffe"="Scheffe", "snk"="SNK", "t.test_bonf"="t-test Bonf", "t.test_sidak"="t-test Sidak", "tukey"="Tukey"))
+
+##EER plot
+
+g1<-ggplot(bal_type1, aes(x=type, y=as.numeric(as.character(bal_type1$prop)))) +
+  geom_bar(aes(fill = test), position = "dodge", stat="identity", color="black") +  
+  labs(fill = "MC Test") + 
+  xlab("Treatment") + 
+  ylab("Proportion type I error") +
+  theme_classic(base_size = 12) +
+  scale_fill_manual(values=c("#A6CEE3", "#1F78B4", "#B2DF8A", "#33A02C", "#FB9A99", "#E31A1C", "#FDBF6F", "#FF7F00", "#CAB2D6"), labels=c("DMRT", "LSD", "LSD Bonferroni", "LSD Sid?k","Scheff?'s S ", "SNK", substitute(paste(italic('t'), "-test Bonferroni")), substitute(paste(italic('t'), "-test Sid?k")), "HSD")) +
+  ggtitle("a) Balanced study design")
+
+g2<-ggplot(unbal_type1, aes(x=type, y=as.numeric(as.character(unbal_type1$prop)))) +
+  geom_bar(aes(fill = test), position = "dodge", stat="identity", color="black") +  
+  labs(fill = "MC Test") + 
+  xlab("Treatment") + 
+  ylab("Proportion type I error") +
+  theme_classic(base_size = 12) +
+  scale_fill_manual(values=c("#A6CEE3", "#1F78B4", "#B2DF8A", "#33A02C", "#FB9A99", "#E31A1C", "#FDBF6F", "#FF7F00", "#CAB2D6"),labels=c("DMRT", "LSD", "LSD Bonferroni", "LSD Sid?k","Scheff?'s S", "SNK", substitute(paste(italic('t'), "-test Bonferroni")), substitute(paste(italic('t'), "-test Sid?k")), "HSD")) +
+  ggtitle("b) Unbalanced study design")
+
+
+pdf(file="EER_type_1_error.pdf", width=6,height=6)
+grid.arrange(g1, g2,nrow = 2)
+dev.off()
+
+
+#####TYPE II
+
+
+###BALANCED
+#blf_d
+true_diff_grps<-length(mylist$blf_d$type_two[1,,1])-1
+prop_type2<-matrix(ncol=2, nrow=9)
+prop_type2[,2]<-test.names
+for(i in 1:9){
+  bad_vec<-mylist$blf_d$type_two[,,i][,1:true_diff_grps]
+  prop_type2[i,1]<-round(length(unique(which(bad_vec>0.05, arr.ind=TRUE)[,1]))/(length(mylist$blf_d$type_two[,1,i])),3)
+}
+
+mylist$blf_d$newprop_type2<-prop_type2
+
+#bhf_d
+true_diff_grps<-length(mylist$bhf_d$type_two[1,,1])-1
+prop_type2<-matrix(ncol=2, nrow=9)
+prop_type2[,2]<-test.names
+for(i in 1:9){
+  bad_vec<-mylist$bhf_d$type_two[,,i][,1:true_diff_grps]
+  prop_type2[i,1]<-round(length(unique(which(bad_vec>0.05, arr.ind=TRUE)[,1]))/(length(mylist$bhf_d$type_two[,1,i])),3)
+}
+
+mylist$bhf_d$newprop_type2<-prop_type2
+
+#blm_d
+true_diff_grps<-length(mylist$blm_d$type_two[1,,1])-1
+prop_type2<-matrix(ncol=2, nrow=9)
+prop_type2[,2]<-test.names
+for(i in 1:9){
+  bad_vec<-mylist$blm_d$type_two[,,i][,1:true_diff_grps]
+  prop_type2[i,1]<-round(length(unique(which(bad_vec>0.05, arr.ind=TRUE)[,1]))/(length(mylist$blm_d$type_two[,1,i])),3)
+}
+
+mylist$blm_d$newprop_type2<-prop_type2
+
+#bhm_d
+true_diff_grps<-length(mylist$bhm_d$type_two[1,,1])-1
+prop_type2<-matrix(ncol=2, nrow=9)
+prop_type2[,2]<-test.names
+for(i in 1:9){
+  bad_vec<-mylist$bhm_d$type_two[,,i][,1:true_diff_grps]
+  prop_type2[i,1]<-round(length(unique(which(bad_vec>0.05, arr.ind=TRUE)[,1]))/(length(mylist$bhm_d$type_two[,1,i])),3)
+}
+
+mylist$bhm_d$newprop_type2<-prop_type2
+
+
+bal_type2<-as.data.frame(rbind(mylist$blf_d$newprop_type2, mylist$blm_d$newprop_type2, mylist$bhf_d$newprop_type2,
+                               mylist$bhm_d$newprop_type2))
+colnames(bal_type2)<-c("prop", "test")
+bal_type2$type<-rep(c("lowss_few", "lowss_many", "highss_few", "highss_many"), each=9)
+
+################UNBALANCED
+#blf_d
+true_diff_grps<-length(mylist$ublf_d$type_two[1,,1])-1
+prop_type2<-matrix(ncol=2, nrow=9)
+prop_type2[,2]<-test.names
+for(i in 1:9){
+  bad_vec<-mylist$ublf_d$type_two[,,i][,1:true_diff_grps]
+  prop_type2[i,1]<-round(length(unique(which(bad_vec>0.05, arr.ind=TRUE)[,1]))/(length(mylist$ublf_d$type_two[,1,i])),3)
+}
+
+mylist$ublf_d$newprop_type2<-prop_type2
+
+#bhf_d
+true_diff_grps<-length(mylist$ubhf_d$type_two[1,,1])-1
+prop_type2<-matrix(ncol=2, nrow=9)
+prop_type2[,2]<-test.names
+for(i in 1:9){
+  bad_vec<-mylist$ubhf_d$type_two[,,i][,1:true_diff_grps]
+  prop_type2[i,1]<-round(length(unique(which(bad_vec>0.05, arr.ind=TRUE)[,1]))/(length(mylist$ubhf_d$type_two[,1,i])),3)
+}
+
+mylist$ubhf_d$newprop_type2<-prop_type2
+
+#blm_d
+true_diff_grps<-length(mylist$ublm_d$type_two[1,,1])-1
+prop_type2<-matrix(ncol=2, nrow=9)
+prop_type2[,2]<-test.names
+for(i in 1:9){
+  bad_vec<-mylist$ublm_d$type_two[,,i][,1:true_diff_grps]
+  prop_type2[i,1]<-round(length(unique(which(bad_vec>0.05, arr.ind=TRUE)[,1]))/(length(mylist$ublm_d$type_two[,1,i])),3)
+}
+
+mylist$ublm_d$newprop_type2<-prop_type2
+
+#bhm_d
+true_diff_grps<-length(mylist$ubhm_d$type_two[1,,1])-1
+prop_type2<-matrix(ncol=2, nrow=9)
+prop_type2[,2]<-test.names
+for(i in 1:9){
+  bad_vec<-mylist$ubhm_d$type_two[,,i][,1:true_diff_grps]
+  prop_type2[i,1]<-round(length(unique(which(bad_vec>0.05, arr.ind=TRUE)[,1]))/(length(mylist$ubhm_d$type_two[,1,i])),3)
+}
+
+mylist$ubhm_d$newprop_type2<-prop_type2
+
+unbal_type2<-as.data.frame(rbind(mylist$ublf_d$newprop_type2, mylist$ublm_d$newprop_type2, mylist$ubhf_d$newprop_type2,
+                                 mylist$ubhm_d$newprop_type2))
+colnames(unbal_type2)<-c("prop", "test")
+unbal_type2$type<-rep(c("lowss_few", "lowss_many", "highss_few", "highss_many"), each=9)
+
+
+
+bal_type2$type<-revalue(bal_type2$type, c("lowss_few"="LSFG", "lowss_many"="LSMG", "highss_few"="HSFG", "highss_many"="HSMG"))
+bal_type2$test<-revalue(bal_type2$test, c("dmrt"="DMRT", "lsd"="LSD", "lsd.bonf"="LSD.Bonf", "lsd.sidak"="LSD.Sidak",
+                                                        "scheffe"="Scheffe", "snk"="S-N-K", "t.test_bonf"="T-test.Bonf", "t.test_sidak"="T-test.Sidak", "tukey"="Tukey"))
+unbal_type2$type<-revalue(unbal_type2$type, c("lowss_few"="LSFG", "lowss_many"="LSMG", "highss_few"="HSFG", "highss_many"="HSMG"))
+unbal_type2$test<-revalue(unbal_type2$test, c("dmrt"="DMRT", "lsd"="LSD", "lsd.bonf"="LSD.Bonf", "lsd.sidak"="LSD.Sidak",
+                                                            "scheffe"="Scheffe", "snk"="S-N-K", "t.test_bonf"="T-test.Bonf", "t.test_sidak"="T-test.Sidak", "tukey"="Tukey"))
+
+
+g3<-ggplot(bal_type2, aes(x=type, y=as.numeric(as.character(bal_type2$prop)))) +
+  geom_bar(aes(fill = test), position = "dodge", stat="identity", color="black") +  
+  labs(fill = "MC Test") + 
+  xlab("Treatment") + 
+  ylab("Proportion type II error") +
+  theme_classic(base_size = 12) +
+  scale_fill_manual(values=c("#A6CEE3", "#1F78B4", "#B2DF8A", "#33A02C", "#FB9A99", "#E31A1C", "#FDBF6F", "#FF7F00", "#CAB2D6"), labels=c("DMRT", "LSD", "LSD Bonferroni", "LSD Sid?k","Scheff?'s S", "SNK", substitute(paste(italic('t'), "-test Bonferroni")), substitute(paste(italic('t'), "-test Sid?k")), "HSD")) +
+  ggtitle("a) Balanced study design")
+
+g4<-ggplot(unbal_type2, aes(x=type, y=as.numeric(as.character(unbal_type2$prop)))) +
+  geom_bar(aes(fill = test), position = "dodge", stat="identity", color="black") +  
+  labs(fill = "MC Test") + 
+  xlab("Treatment") + 
+  ylab("Proportion type II error") +
+  theme_classic(base_size = 12) +
+  scale_fill_manual(values=c("#A6CEE3", "#1F78B4", "#B2DF8A", "#33A02C", "#FB9A99", "#E31A1C", "#FDBF6F", "#FF7F00", "#CAB2D6"), labels=c("DMRT", "LSD", "LSD Bonferroni", "LSD Sid?k","Scheff?'s S", "SNK", substitute(paste(italic('t'), "-test Bonferroni")), substitute(paste(italic('t'), "-test Sid?k")), "HSD")) +
+  ggtitle("b) Unbalanced study design")
+
+pdf(file="EER_type_2_error.pdf", width=6,height=6)
+grid.arrange(g3, g4,nrow = 2)
+dev.off()
+
