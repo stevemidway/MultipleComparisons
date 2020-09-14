@@ -52,7 +52,7 @@ ridge_plot_t1<-function(plot.data){
     scale_fill_manual(values=c("#A6CEE3", "#1F78B4", "#B2DF8A", "#33A02C", "#FB9A99", "#E31A1C", "#FDBF6F", "#FF7F00", "#CAB2D6")) +
     theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
           panel.background = element_blank(), axis.line = element_line(colour = "black"))+
-    scale_y_discrete(labels=c("DMRT", "LSD", "LSD Bonferroni", "LSD Sidák", "SNK", "Scheffé's S", substitute(paste(italic('t'), "-test Bonferroni")), substitute(paste(italic('t'), "-test Sidák")), "HSD"))
+    scale_y_discrete(labels=c("DMRT", "LSD", "LSD Bonferroni", "LSD Sidák", "Scheffé's S", "SNK",  substitute(paste(italic('t'), "-test Bonferroni")), substitute(paste(italic('t'), "-test Sidák")), "HSD"))
 }
 
 
@@ -132,7 +132,7 @@ ridge_plot_t2<-function(plot_data){
     scale_fill_manual(values=c("#A6CEE3", "#1F78B4", "#B2DF8A", "#33A02C", "#FB9A99", "#E31A1C", "#FDBF6F", "#FF7F00", "#CAB2D6")) +
     theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
           panel.background = element_blank(), axis.line = element_line(colour = "black"))+
-    scale_y_discrete(labels=c("DMRT", "LSD", "LSD Bonferroni", "LSD Sidák", "SNK", "Scheffé's S", substitute(paste(italic('t'), "-test Bonferroni")), substitute(paste(italic('t'), "-test Sidák")), "HSD"))
+    scale_y_discrete(labels=c("DMRT", "LSD", "LSD Bonferroni", "LSD Sidák", "Scheffé's S", "SNK", substitute(paste(italic('t'), "-test Bonferroni")), substitute(paste(italic('t'), "-test Sidák")), "HSD"))
 }
 
 
